@@ -1,0 +1,60 @@
+<mvc:View controllerName="de.tit.demo.gamerequest.controller.View1" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">
+	<App id="app">
+			<pages>
+				<Page id="page" title="{i18n>title}">
+					<content>
+                         <sap.ui.layout.form:Form xmlns:sap.ui.layout.form="sap.ui.layout.form" editable="true" id="form0">
+                    
+                    <sap.ui.layout.form:formContainers>
+                    
+                        <sap.ui.layout.form:FormContainer id="container0">
+                    
+                            <sap.ui.layout.form:formElements>
+                    
+                                <sap.ui.layout.form:FormElement label="Spilename" id="element0">
+                    
+                                    <sap.ui.layout.form:fields>
+                    
+                                        <Input width="100%" id="input0" value="{context>/gamename}"/>
+                    
+                                    </sap.ui.layout.form:fields>
+                    
+                                </sap.ui.layout.form:FormElement>
+                    
+                                <sap.ui.layout.form:FormElement label="Angefragt von" id="element1">
+                    
+                                    <sap.ui.layout.form:fields>
+                    
+                                        <Input width="100%" id="input1" value="{context>/requestor}"/>
+                    
+                                    </sap.ui.layout.form:fields>
+                    
+                                </sap.ui.layout.form:FormElement>
+                    
+                                
+                    
+                            </sap.ui.layout.form:formElements>
+                    
+                        </sap.ui.layout.form:FormContainer>
+                    
+                    </sap.ui.layout.form:formContainers>
+                    
+                    <sap.ui.layout.form:layout>
+                    
+                        <sap.ui.layout.form:ResponsiveGridLayout id="layout0"/>
+                    
+                    </sap.ui.layout.form:layout></sap.ui.layout.form:Form>
+                    </content>
+                    <footer>
+                        <OverflowToolbar width="100%" id="toolbar1" visible="false">
+			                <content>
+			                    <ToolbarSpacer id="spacer0"/>
+			                    <Button xmlns="sap.m" text="Senden" id="button0" icon="sap-icon://paper-plane" type="Emphasized" 
+                                    press="startWorkflowInstance"/>
+			                </content>
+			             </OverflowToolbar>
+                    </footer>
+				</Page>
+			</pages>
+		</App>
+</mvc:View>

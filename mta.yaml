@@ -1,0 +1,96 @@
+_schema-version: "3.2"
+ID: gamerequest
+version: 0.0.1
+modules:
+- name: wfgame
+  type: com.sap.application.content
+  path: wfgame
+  requires:
+  - name: workflow-srv
+    parameters:
+      content-target: true
+- name: gamerequest-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: gamerequest-destination-service
+    parameters:
+      content-target: true
+  - name: gamerequest_html_repo_host
+    parameters:
+      service-key:
+        name: gamerequest_html_repo_host-key
+  - name: uaa_gamerequest
+    parameters:
+      service-key:
+        name: uaa_gamerequest-key
+  parameters:
+    content:
+      subaccount:
+        destinations:
+        - Name: tit_workflow_game_gamerequest_html_repo_host
+          ServiceInstanceName: gamerequest-html5-app-host-service
+          ServiceKeyName: gamerequest_html_repo_host-key
+          sap.cloud.service: tit.workflow.game
+        - Authentication: OAuth2UserTokenExchange
+          Name: tit_workflow_game_uaa_gamerequest
+          ServiceInstanceName: gamerequest-xsuaa-service
+          ServiceKeyName: uaa_gamerequest-key
+          sap.cloud.service: tit.workflow.game
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: gamerequest_ui_deployer
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: gamerequest_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - gamerequest-content.zip
+      name: gamerequest
+      target-path: resources/
+- name: gamerequest
+  type: html5
+  path: gamerequest
+  build-parameters:
+    builder: custom
+    commands:
+    - npm run build
+    supported-platforms: []
+resources:
+- name: workflow-srv
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: workflow
+    service-plan: lite
+- name: gamerequest-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      version: 1.0.0
+    service: destination
+    service-name: gamerequest-destination-service
+    service-plan: lite
+- name: gamerequest_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: gamerequest-html5-app-host-service
+    service-plan: app-host
+- name: uaa_gamerequest
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: gamerequest-xsuaa-service
+    service-plan: application
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm install
